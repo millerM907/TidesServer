@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "weather")
 public class Weather {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -25,7 +25,6 @@ public class Weather {
     public Weather(){}
 
     public Weather(String temperature, String wind_force, String wind_direction, String humidity){
-        this.id = id;
         this.temperature = temperature;
         this.humidity = humidity;
         this.wind_direction = wind_direction;
@@ -36,7 +35,7 @@ public class Weather {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
