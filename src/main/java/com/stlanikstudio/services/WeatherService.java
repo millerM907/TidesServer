@@ -20,7 +20,6 @@ public class WeatherService extends Service<Weather> {
         super.update(entity);
     }
 
-    @Override
     public Weather getById(Integer id) {
         return super.getById(id);
     }

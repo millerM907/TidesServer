@@ -21,14 +21,13 @@ public class SheduledTasks {
     /*@Autowired
     private WeatherDaoTwo weatherDaoTwo;*/
 
-    private WeatherService weatherService = new WeatherService(new WeatherDaoTwo());
+    private WeatherService weatherService;
     private int countUpdateRow = 0;
 
     //обновлять таблицу Weather по раписанию
     @Scheduled(fixedRate = 18000)
     public void updateCurrentWeatherTable(){
-
-
+        weatherService = new WeatherService(new WeatherDaoTwo());
         ArrayList<String> currentWeatherList = (ArrayList<String>) GismeteoParser.getGismeteoWeatherDataList();
         Weather weather = new Weather(
                 currentWeatherList.get(0),
