@@ -1,4 +1,4 @@
-package com.stlanikstudio;
+package com.stlanikstudio.parsers;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,26 +1,28 @@
 package com.stlanikstudio.services;
 
-import com.stlanikstudio.dao.Dao;
 import com.stlanikstudio.models.Weather;
+import com.stlanikstudio.repository.WeatherRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
-public class WeatherService extends Service<Weather> {
+import java.util.Optional;
 
-    public WeatherService(Dao dao) {
-        super(dao);
+@Service
+public class WeatherService {
+
+    @Autowired
+    private WeatherRepository weatherRepository;
+
+    public void addWeather(Weather weather){
+        weatherRepository.save(weather);
     }
 
-    @Override
-    public void create(Weather entity) {
-        super.create(entity);
+    public void updateWeather(Weather weather){
+        weatherRepository.save(weather);
     }
 
-    @Override
-    public void update(Weather entity) {
-        super.update(entity);
-    }
-
-    public Weather getById(Integer id) {
-        return super.getById(id);
+    public Optional<Weather> getWeatherById(Integer id){
+        return weatherRepository.findById(id);
     }
 }
+

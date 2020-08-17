@@ -1,7 +1,6 @@
 package com.stlanikstudio.accessingdatamysql;
 
 import com.stlanikstudio.models.Weather;
-import com.stlanikstudio.services.WeatherService;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

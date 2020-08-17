@@ -6,9 +6,9 @@ import javax.persistence.*;
 @Table(name = "weather")
 public class Weather {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "temperature")
     private String temperature;
@@ -24,7 +24,8 @@ public class Weather {
 
     public Weather(){}
 
-    public Weather(String temperature, String wind_force, String wind_direction, String humidity){
+    public Weather(Integer id, String temperature, String wind_force, String wind_direction, String humidity){
+        this.id = id;
         this.temperature = temperature;
         this.humidity = humidity;
         this.wind_direction = wind_direction;
