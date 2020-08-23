@@ -11,21 +11,8 @@ import java.util.Optional;
 @RestController
 public class WeatherRestController {
 
-    /*@Autowired
-    private WeatherDao weatherDao;*/
-
-    /*@Autowired
-    private WeatherDaoTwo weatherDaoTwo;*/
-
     @Autowired
     private WeatherService weatherService;
-
-    /*private WeatherDaoImp weatherDaoImp;*/
-
-    /*@GetMapping("/currentWeather")
-    public Weather getCurrentWeather(){
-        return weatherDao.getById(1);
-    }*/
 
     @GetMapping("/currentWeather")
     public Optional<Weather> getCurrentWeather(){
