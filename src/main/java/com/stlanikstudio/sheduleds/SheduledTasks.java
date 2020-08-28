@@ -26,7 +26,7 @@ public class SheduledTasks {
     private WeatherService weatherService;
 
     //обновлять таблицу Weather по раписанию
-    @Scheduled(fixedRate = 18000)
+    @Scheduled(fixedRate = 1800000)
     public void updateCurrentWeatherTable(){
         ArrayList<String> currentWeatherList = (ArrayList<String>) GismeteoParser.getGismeteoWeatherDataList();
         Weather weather = new Weather(
