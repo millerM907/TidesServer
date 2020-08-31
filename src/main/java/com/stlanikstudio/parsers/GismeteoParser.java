@@ -92,7 +92,6 @@ public class GismeteoParser {
                 try {
                     Elements windDirectionContent = windContent.select("div.nowinfo__measure.nowinfo__measure_wind");
                     windDirection = windDirectionContent.get(0).text().replaceAll("(м/с)?", "").replaceAll(" ", "");
-                    //windDirection = "СЗ";
                     String[] directionShortName = {"С", "B", "З", "Ю"};
                     switch (windDirection){
                         case "Северный":
