@@ -100,7 +100,7 @@ public class GismeteoParser {
                         case "Восточный":
                             windDirection = directionShortName[1];
                             break;
-                        case "Западаный":
+                        case "Западный":
                             windDirection = directionShortName[2];
                             break;
                         case "Южный":
