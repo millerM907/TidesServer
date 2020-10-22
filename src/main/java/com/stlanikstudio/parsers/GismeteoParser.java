@@ -13,18 +13,19 @@ import java.util.List;
 
 public class GismeteoParser {
 
-    private static GismeteoParser instance = new GismeteoParser();
-    private GismeteoParser(){}
+    private static final String WEATHER_SITE_URL = "https://www.gismeteo.ru/weather-magadan-4063/now/";
+    private static final String BROWSER_URL = "Chrome/86.0.4240.75 Safari/12.1.1";
+    private static final String SEARCH_SITE_URL = "http://www.google.com";
 
     private static List getGeneralParametra(){
         List<Object> generalParametra = new ArrayList<>();
         String def = "-200";
 
-        Document doc = null;
+        Document doc;
         try {
-            doc = Jsoup.connect("https://www.gismeteo.ru/weather-magadan-4063/now/")
-                    .userAgent("Chrome/77.0.3865.90 Safari/12.1.1")
-                    .referrer("http://www.google.com")
+            doc = Jsoup.connect(WEATHER_SITE_URL)
+                    .userAgent(BROWSER_URL)
+                    .referrer(SEARCH_SITE_URL)
                     .get();
 
         } catch (IOException e) {
@@ -59,6 +60,7 @@ public class GismeteoParser {
             String temperature = tempContent.get(0).text().replaceAll("^[\\n]?[+]?[\\n]?", "");
             String tempValue = temperature.replace(",", ".");
             tempValue = tempValue.replaceAll("[−]", "-");
+            System.out.println(tempValue);
             tempValue = String.valueOf((int)Float.parseFloat(tempValue));
             gismeteoWeatherDataList.add(tempValue);
         } catch (NullPointerException e) {
@@ -77,7 +79,7 @@ public class GismeteoParser {
                     Elements windSpeedContent = windContent.select("div.nowinfo__value");
                     windValue = windSpeedContent.get(0).text().replaceAll("[\\n]?", "");
                 } catch (NullPointerException e) {
-                } catch (NumberFormatException e) {
+                } catch (java.lang.NumberFormatException e) {
                     String[] windDataArray = windValue.split("-");
                     short firstWindValueSh = Short.parseShort(windDataArray[0]);
                     short secondWindValueSh = Short.parseShort(windDataArray[1]);
@@ -92,6 +94,7 @@ public class GismeteoParser {
                 try {
                     Elements windDirectionContent = windContent.select("div.nowinfo__measure.nowinfo__measure_wind");
                     windDirection = windDirectionContent.get(0).text().replaceAll("(м/с)?", "").replaceAll(" ", "");
+                    windDirection = "СЗ";
                     String[] directionShortName = {"С", "B", "З", "Ю"};
                     switch (windDirection){
                         case "Северный":
@@ -100,7 +103,7 @@ public class GismeteoParser {
                         case "Восточный":
                             windDirection = directionShortName[1];
                             break;
-                        case "Западный":
+                        case "Западаный":
                             windDirection = directionShortName[2];
                             break;
                         case "Южный":
@@ -189,9 +192,5 @@ public class GismeteoParser {
 
         return gismeteoSunActivityDataList;
     }
-
-
-    public static GismeteoParser getInstance(){
-        return instance;
-    }
 }
+
