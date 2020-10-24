@@ -16,10 +16,10 @@ public class GismeteoParser {
     private static final String WEATHER_SITE_URL = "https://www.gismeteo.ru/weather-magadan-4063/now/";
     private static final String BROWSER_URL = "Chrome/86.0.4240.75 Safari/12.1.1";
     private static final String SEARCH_SITE_URL = "http://www.google.com";
+    private static final String ERROR_VALUE = "-200";
 
     private static List getGeneralParametra(){
         List<Object> generalParametra = new ArrayList<>();
-        String def = "-200";
 
         Document doc;
         try {
@@ -29,7 +29,8 @@ public class GismeteoParser {
                     .get();
 
         } catch (IOException e) {
-            generalParametra.add(def);
+            e.printStackTrace();
+            generalParametra.add(ERROR_VALUE);
             return generalParametra;
         }
 
@@ -37,34 +38,33 @@ public class GismeteoParser {
         return generalParametra;
     }
 
-
-
     public static List getGismeteoWeatherDataList(){
         List generalParametra = getGeneralParametra();
         List<String> gismeteoWeatherDataList = new ArrayList<>();
-        String def = "-100";
 
         Document doc;
-        if(!generalParametra.get(0).equals("-200")){
+        if(!generalParametra.get(0).equals(ERROR_VALUE)){
             doc = (Document) generalParametra.get(0);
         } else {
             for(int i = 0; i < 4; i++){
-                gismeteoWeatherDataList.add(i, def);
+                gismeteoWeatherDataList.add(i, ERROR_VALUE);
             }
             return gismeteoWeatherDataList;
         }
 
+        //Температура в градусах Цельсия
+        String tempValue = ERROR_VALUE;
         try {
-            //Температура в градусах Цельсия
             Elements tempContent = doc.select("span.js_value");
             String temperature = tempContent.get(0).text().replaceAll("^[\\n]?[+]?[\\n]?", "");
-            String tempValue = temperature.replace(",", ".");
+            tempValue = temperature.replace(",", ".");
             tempValue = tempValue.replaceAll("[−]", "-");
-            System.out.println(tempValue);
             tempValue = String.valueOf((int)Float.parseFloat(tempValue));
-            gismeteoWeatherDataList.add(tempValue);
         } catch (NullPointerException e) {
-            gismeteoWeatherDataList.add(def);
+            System.out.println("Temperature element not found on this web-page");
+            e.printStackTrace();
+        } finally {
+            gismeteoWeatherDataList.add(tempValue);
         }
 
         try {
@@ -74,11 +74,13 @@ public class GismeteoParser {
                 Elements windContent = infoContent.select("div.nowinfo__item.nowinfo__item_wind");
 
                 //Скорость ветра в м/с
-                String windValue = def;
+                String windValue = ERROR_VALUE;
                 try {
                     Elements windSpeedContent = windContent.select("div.nowinfo__value");
                     windValue = windSpeedContent.get(0).text().replaceAll("[\\n]?", "");
                 } catch (NullPointerException e) {
+                    System.out.println("Wind element not found on this web-page");
+                    e.printStackTrace();
                 } catch (java.lang.NumberFormatException e) {
                     String[] windDataArray = windValue.split("-");
                     short firstWindValueSh = Short.parseShort(windDataArray[0]);
@@ -90,11 +92,10 @@ public class GismeteoParser {
                 }
 
                 //Направление ветра
-                String windDirection = def;
+                String windDirection = ERROR_VALUE;
                 try {
                     Elements windDirectionContent = windContent.select("div.nowinfo__measure.nowinfo__measure_wind");
                     windDirection = windDirectionContent.get(0).text().replaceAll("(м/с)?", "").replaceAll(" ", "");
-                    windDirection = "СЗ";
                     String[] directionShortName = {"С", "B", "З", "Ю"};
                     switch (windDirection){
                         case "Северный":
@@ -113,30 +114,38 @@ public class GismeteoParser {
                             break;
                     }
                 } catch (NullPointerException e) {
+                    System.out.println("Wind direction element not found on this web-page");
+                    e.printStackTrace();
                 } finally {
                     gismeteoWeatherDataList.add(windDirection);
                 }
 
 
             } catch (NullPointerException e) {
-                gismeteoWeatherDataList.add(1, def);
-                gismeteoWeatherDataList.add(2, def);
+                System.out.println("Winds element not found on this web-page");
+                e.printStackTrace();
+                gismeteoWeatherDataList.add(1, ERROR_VALUE);
+                gismeteoWeatherDataList.add(2, ERROR_VALUE);
             }
 
             //Влажность в %
-            String humidityValue = def;
+            String humidityValue = ERROR_VALUE;
             try {
                 Elements humidityContent = infoContent.select("div.nowinfo__item.nowinfo__item_humidity");
                 Elements humidityValueContent = humidityContent.select("div.nowinfo__value");
                 humidityValue = humidityValueContent.get(0).text().replaceAll("[\\n]", "");
             } catch (NullPointerException e) {
+                System.out.println("Humidity element not found on this web-page");
+                e.printStackTrace();
             } finally {
                 gismeteoWeatherDataList.add(humidityValue);
             }
         } catch (NullPointerException e) {
-            gismeteoWeatherDataList.add(1, def);
-            gismeteoWeatherDataList.add(2, def);
-            gismeteoWeatherDataList.add(3, def);
+            System.out.println("Winds and humidity element not found on this web-page");
+            e.printStackTrace();
+            gismeteoWeatherDataList.add(1, ERROR_VALUE);
+            gismeteoWeatherDataList.add(2, ERROR_VALUE);
+            gismeteoWeatherDataList.add(3, ERROR_VALUE);
         }
 
         return gismeteoWeatherDataList;
@@ -147,14 +156,12 @@ public class GismeteoParser {
         List generalParametra = getGeneralParametra();
         List<String> gismeteoSunActivityDataList = new ArrayList<>();
 
-        String def = "-100";
-
         Document doc;
         if(!generalParametra.get(0).equals("-200")){
             doc = (Document) generalParametra.get(0);
         } else {
             for(int i = 0; i < 2; i++){
-                gismeteoSunActivityDataList.add(i, def);
+                gismeteoSunActivityDataList.add(i, ERROR_VALUE);
             }
             return gismeteoSunActivityDataList;
         }
@@ -173,7 +180,7 @@ public class GismeteoParser {
                 sunset = rising;
                 rising = exchange;
             }
-            //вычисляем текущее время
+
             LocalDateTime localTodayTime = LocalDateTime.now(ZoneId.of("Asia/Magadan"));
 
             //шаблон для подстановки времени
@@ -186,11 +193,11 @@ public class GismeteoParser {
             gismeteoSunActivityDataList.add(sunset);
 
         } catch (NullPointerException e) {
-            gismeteoSunActivityDataList.add(def);
-            gismeteoSunActivityDataList.add(def);
+            System.out.println("Sun activity element not found on this web-page");
+            e.printStackTrace();
+            gismeteoSunActivityDataList.add(ERROR_VALUE);
+            gismeteoSunActivityDataList.add(ERROR_VALUE);
         }
-
         return gismeteoSunActivityDataList;
     }
 }
-

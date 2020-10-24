@@ -13,16 +13,6 @@
     <artifactId>TidesServer</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!--<properties>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.parameters>true</maven.compiler.parameters>
-    </properties>-->
-
-    <!--<properties>
-        <java.version>11</java.version>
-    </properties>-->
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -43,8 +33,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -72,6 +63,8 @@
     </dependencies>
 
     <build>
+
+        <finalName>${artifactId}</finalName>
 
         <plugins>
             <plugin>
