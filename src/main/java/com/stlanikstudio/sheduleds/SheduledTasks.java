@@ -25,7 +25,7 @@ public class SheduledTasks {
 
     private int countUpdateRow = 0;
 
-    private String monthUpdateTable;
+    private String monthUpdateTable = "";
 
     @Autowired
     private WeatherService weatherService;
