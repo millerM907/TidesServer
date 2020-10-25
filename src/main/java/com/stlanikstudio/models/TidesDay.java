@@ -25,18 +25,6 @@ public class TidesDay {
 
     public TidesDay() {}
 
-    public TidesDay(Integer id, String sunriseTime, String sunsetTime, String tidesTimeFirst, String tidesHeightFirst, String tidesTimeSecond, String getTidesHeightSecond, String tidesTimeThird, String getTidesHeightThird) {
-        this.id = id;
-        this.sunriseTime = sunriseTime;
-        this.sunsetTime = sunsetTime;
-        this.tidesTimeFirst = tidesTimeFirst;
-        this.tidesHeightFirst = tidesHeightFirst;
-        this.tidesTimeSecond = tidesTimeSecond;
-        this.getTidesHeightSecond = getTidesHeightSecond;
-        this.tidesTimeThird = tidesTimeThird;
-        this.getTidesHeightThird = getTidesHeightThird;
-    }
-
     public TidesDay(Integer id, String sunriseTime, String sunsetTime, String tidesTimeFirst, String tidesHeightFirst, String tidesTimeSecond, String getTidesHeightSecond, String tidesTimeThird, String getTidesHeightThird, String tidesTimeFourth, String getTidesHeightFourth) {
         this.id = id;
         this.sunriseTime = sunriseTime;

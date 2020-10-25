@@ -21,4 +21,12 @@ public class TidesDayService {
     public Optional<TidesDay> getTidesDayById(Integer id) {
         return tidesDayRepository.findById(id);
     }
+
+    public Iterable<TidesDay> getAllTidesDay() {
+        return tidesDayRepository.findAll();
+    }
+
+    public void deleteAllTidesDay() {
+        tidesDayRepository.deleteAll();
+    }
 }
