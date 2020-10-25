@@ -2,7 +2,7 @@
 
 TidesServer
 
-# Description
+# About TidesServer
 
 This web application serves as a backend for the "Tides in Magadan" mobile Android app (link to the repository). 
 It performs the following functions:
