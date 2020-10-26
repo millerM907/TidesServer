@@ -1,5 +1,3 @@
-# Project name
-
 TidesServer
 
 # About TidesServer
